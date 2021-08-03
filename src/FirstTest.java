@@ -35,6 +35,7 @@ public class FirstTest {
         driver.quit();
     }
 
+    // Тест для проверки того, что у элемента на странице есть определенный текст
     @Test
     public void checkElementHasText() {
         waitForElementAndClick(
@@ -63,6 +64,65 @@ public class FirstTest {
 
     }
 
+    // Тест для проверки того, что при запросе в поиске отображается несколько искомых статей, потом проверяем отмену поиска
+    @Test
+    public void checkSearchCancel() {
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/fragment_onboarding_skip_button"),
+                "Cannot find 'Search Wikipedia' input",
+                5
+        );
+
+        waitForElementAndClick(
+                By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
+                "Cannot find 'Search Wikipedia' input",
+                5
+        );
+
+        waitForElementAndSendKeys(
+                By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
+                "Appium",
+                "Cannot find search input",
+                5
+        );
+
+        WebElement element1 = waitForElementPresent(
+                By.xpath("//android.view.ViewGroup[@index='0']/android.widget.TextView"),
+                "Cannot find 'Appium' text",
+                15
+        );
+        WebElement element2 = waitForElementPresent(
+                By.xpath("//android.view.ViewGroup[@index='1']/android.widget.TextView"),
+                "Cannot find 'Appius' text",
+                15
+        );
+
+        assertElementHasText(
+                element1,
+                "Appium",
+                "No text 'Appium'"
+        );
+
+        assertElementHasText(
+                element2,
+                "Appius Claudius Caecus",
+                "No text 'AppImage'"
+        );
+
+        waitForElementAndClick(
+                By.className("android.widget.ImageButton"),
+                "Cannot find 'Back button' to cancel search",
+                5
+        );
+
+        waitForElementNotPresent(
+                By.className("android.widget.ImageButton"),
+                "Back button is still on a page",
+                5
+        );
+
+    }
+
     private WebElement waitForElementPresent(By by, String error_message, long timeoutInSeconds) {
         WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
         wait.withMessage(error_message + "\n");
@@ -76,6 +136,26 @@ public class FirstTest {
     private WebElement waitForElementAndClick(By by, String error_message, long timeoutInSeconds) {
         WebElement element = waitForElementPresent(by, error_message, timeoutInSeconds);
         element.click();
+        return element;
+    }
+
+    private WebElement waitForElementAndSendKeys(By by, String value, String error_message, long timeoutInSeconds) {
+        WebElement element = waitForElementPresent(by, error_message, timeoutInSeconds);
+        element.sendKeys(value);
+        return element;
+    }
+
+    private boolean waitForElementNotPresent(By by, String error_message, long timeoutInSeconds) {
+        WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
+        wait.withMessage(error_message + "\n");
+        return wait.until (
+                ExpectedConditions.invisibilityOfElementLocated(by)
+        );
+    }
+
+    private WebElement waitForElementAndClear(By by, String error_message, long timeoutInSeconds) {
+        WebElement element =waitForElementPresent(by, error_message, timeoutInSeconds);
+        element.clear();
         return element;
     }
 
