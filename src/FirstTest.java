@@ -123,6 +123,115 @@ public class FirstTest {
 
     }
 
+    // Тест для проверки названия каждой статьи на странице
+    @Test
+    public void checkArticlesContainText() {
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/fragment_onboarding_skip_button"),
+                "Cannot find 'Search Wikipedia' input",
+                5
+        );
+
+        waitForElementAndClick(
+                By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
+                "Cannot find 'Search Wikipedia' input",
+                5
+        );
+
+        waitForElementAndSendKeys(
+                By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
+                "java",
+                "Cannot find search input",
+                5
+        );
+
+        WebElement element0 = waitForElementPresent(
+                By.xpath("//android.view.ViewGroup[@index='0']/android.widget.TextView"),
+                "Cannot find 'java' text",
+                15
+        );
+        WebElement element1 = waitForElementPresent(
+                By.xpath("//android.view.ViewGroup[@index='1']/android.widget.TextView"),
+                "Cannot find 'java' text",
+                15
+        );
+        WebElement element2 = waitForElementPresent(
+                By.xpath("//android.view.ViewGroup[@index='0']/android.widget.TextView"),
+                "Cannot find 'java' text",
+                15
+        );
+        WebElement element3 = waitForElementPresent(
+                By.xpath("//android.view.ViewGroup[@index='1']/android.widget.TextView"),
+                "Cannot find 'java' text",
+                15
+        );
+        WebElement element4 = waitForElementPresent(
+                By.xpath("//android.view.ViewGroup[@index='0']/android.widget.TextView"),
+                "Cannot find 'java' text",
+                15
+        );
+        WebElement element5 = waitForElementPresent(
+                By.xpath("//android.view.ViewGroup[@index='1']/android.widget.TextView"),
+                "Cannot find 'java' text",
+                15
+        );
+        WebElement element6 = waitForElementPresent(
+                By.xpath("//android.view.ViewGroup[@index='0']/android.widget.TextView"),
+                "Cannot find 'java' text",
+                15
+        );
+        WebElement element7 = waitForElementPresent(
+                By.xpath("//android.view.ViewGroup[@index='1']/android.widget.TextView"),
+                "Cannot find 'java' text",
+                15
+        );
+
+        assertElementHasText(
+                element0,
+                "java",
+                "No text 'java'"
+        );
+
+        assertElementHasText(
+                element1,
+                "java",
+                "No text 'java'"
+        );
+        assertElementHasText(
+                element2,
+                "java",
+                "No text 'java'"
+        );
+
+        assertElementHasText(
+                element3,
+                "java",
+                "No text 'java'"
+        );
+        assertElementHasText(
+                element4,
+                "java",
+                "No text 'java'"
+        );
+
+        assertElementHasText(
+                element5,
+                "java",
+                "No text 'java'"
+        );
+        assertElementHasText(
+                element6,
+                "java",
+                "No text 'java'"
+        );
+
+        assertElementHasText(
+                element7,
+                "java",
+                "No text 'java'"
+        );
+    }
+
     private WebElement waitForElementPresent(By by, String error_message, long timeoutInSeconds) {
         WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
         wait.withMessage(error_message + "\n");
@@ -161,7 +270,7 @@ public class FirstTest {
 
     private void assertElementHasText(WebElement element, String expected_text, String error_message) {
         String actual_text = element.getAttribute("text");
-        if (actual_text.equals(expected_text)) {
+        if (actual_text.toLowerCase().contains(expected_text.toLowerCase())) {
             System.out.println("Test passed! Element text is equal to expected text");
         }
         else {
