@@ -687,6 +687,39 @@ public class FirstTest {
         );
     }
 
+    @Test
+    public void checkTitleOfArticleImmediately() {
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/fragment_onboarding_skip_button"),
+                "Cannot find 'Skip button' input",
+                5
+        );
+
+        waitForElementAndClick(
+                By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
+                "Cannot find 'Search Wikipedia' input",
+                5
+        );
+
+        waitForElementAndSendKeys(
+                By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
+                "java",
+                "Cannot find search input",
+                5
+        );
+        waitForElementAndClick(
+                By.xpath("//android.view.ViewGroup[@index='1']/android.widget.TextView"),
+                "Cannot find 'java' text",
+                15
+        );
+
+        assertElementPresent(
+                By.xpath("//android.view.View[contains(@text, 'JavaScript')]"),
+                "No results found for the desired title"
+        );
+
+    }
+
     private WebElement waitForElementPresent(By by, String error_message, long timeoutInSeconds) {
         WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
         wait.withMessage(error_message + "\n");
@@ -804,5 +837,13 @@ public class FirstTest {
     private String waitForElementAndGetAttribute(By by, String attribute, String error_message, long timeInSeconds) {
         WebElement element = waitForElementPresent(by, error_message, timeInSeconds);
         return element.getAttribute(attribute);
+    }
+
+    private  void assertElementPresent(By by, String error_message) {
+        int amountOfElements = getAmountOfElements(by);
+        if (amountOfElements <= 0) {
+            String default_message = "An element " + by.toString() + " supposed to be presented at the page";
+            throw new AssertionError(default_message + " " + error_message);
+        }
     }
 }
