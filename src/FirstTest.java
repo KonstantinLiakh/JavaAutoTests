@@ -539,10 +539,153 @@ public class FirstTest {
                 "Cannot find article in search results after returning from background",
                 15
         );
-
-
     }
 
+    @Test
+    public void saveTwoArticlesAndDeleteOneOfIt(){
+        //methods to remember 1st article title, save it and go back to articles list
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/fragment_onboarding_skip_button"),
+                "Cannot find 'Skip button' input",
+                5
+        );
+
+        waitForElementAndClick(
+                By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
+                "Cannot find 'Search Wikipedia' input",
+                5
+        );
+
+        waitForElementAndSendKeys(
+                By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
+                "java",
+                "Cannot find search input",
+                5
+        );
+        waitForElementAndClick(
+                By.xpath("//android.view.ViewGroup[@index='1']/android.widget.TextView"),
+                "Cannot find 'java' text",
+                15
+        );
+
+        String title_before_saving = waitForElementAndGetAttribute(
+                By.xpath("//android.view.View[contains(@text, 'JavaScript')]"),
+                "text",
+                "Cannot find the title of 1st article",
+                15
+        );
+
+        waitForElementAndClick(
+                By.xpath("//android.widget.TextView[contains(@text, 'Save')]"),
+                "Cannot find find button to 'Save' 1st article",
+                5
+        );
+
+        waitForElementAndClick(
+                By.xpath("//android.widget.Button[contains(@text, 'ADD TO LIST')]"),
+                "Cannot find find button for 1st article to 'ADD TO LIST'",
+                5
+        );
+
+        String name_of_my_folder = "List_for_test";
+
+        waitForElementAndSendKeys(
+                By.id("org.wikipedia:id/text_input"),
+                name_of_my_folder,
+                "Cannot type text 'List_for_test' for new saved list",
+                5
+        );
+        waitForElementAndClick(
+                By.xpath("//android.widget.Button[contains(@text, 'OK')]"),
+                "Cannot press 'OK' button to save 1st article to my list",
+                5
+        );
+
+        waitForElementAndClick(
+                By.xpath("//android.widget.ImageButton[contains(@content-desc, 'Navigate up')]"),
+                "Cannot close 1st article",
+                5
+        );
+
+        //methods to save 2nd article
+        waitForElementAndClick(
+                By.xpath("//android.view.ViewGroup[@index='2']/android.widget.TextView"),
+                "Cannot find 'java' text",
+                15
+        );
+
+        waitForElementAndClick(
+                By.xpath("//android.widget.TextView[contains(@text, 'Save')]"),
+                "Cannot find find button 'Save' to save 2nd article",
+                5
+        );
+
+        waitForElementAndClick(
+                By.xpath("//android.widget.Button[contains(@text, 'ADD TO LIST')]"),
+                "Cannot find find button for 2nd article to 'ADD TO LIST'",
+                5
+        );
+
+        waitForElementAndClick(
+                By.xpath("//android.widget.TextView[contains(@text, 'List')]"),
+                "Cannot press 'OK' button to save 2nd article to my list",
+                5
+        );
+        //Go to saved list, delete 2nd article and keep 1st article
+        waitForElementAndClick(
+                By.xpath("//android.widget.ImageButton[contains(@content-desc, 'Navigate up')]"),
+                "Cannot close 2nd article",
+                5
+        );
+
+        waitForElementAndClick(
+                By.className("android.widget.ImageButton"),
+                "Cannot find 'Back button' to cancel search",
+                5
+        );
+
+        waitForElementAndClick(
+                By.xpath("//android.widget.FrameLayout[contains(@content-desc, 'Saved')]"),
+                "Cannot get to my 'Saved' articles",
+                5
+        );
+
+        waitForElementAndClick(
+                By.xpath("//android.widget.TextView[contains(@text, '" + name_of_my_folder +"')]"),
+                "Cannot get to my created saved folded" + name_of_my_folder,
+                5
+        );
+
+        swipeElementToLeft(
+                By.xpath("//android.widget.TextView[contains(@text, 'Java (programming language)')]"),
+                "Cannot find 2nd saved article"
+        );
+
+        waitForElementNotPresent(
+                By.xpath("//android.widget.TextView[contains(@text, 'Java (programming language)')]"),
+                "Cannot delete 2nd saved article",
+                5
+        );
+
+        waitForElementAndClick(
+                By.xpath("//android.view.ViewGroup[@index='1']/android.widget.TextView"),
+                "2nd article is not presented pn the screen",
+                15
+        );
+
+        String title_after_saving = waitForElementAndGetAttribute(
+                By.xpath("//android.view.View[contains(@text, 'JavaScript')]"),
+                "text",
+                "Cannot find the title of 1st article",
+                15
+        );
+
+        Assert.assertEquals(
+                "Title of the 1st article before saving is not equal to title in saved list folder",
+                title_before_saving,
+                title_after_saving
+        );
+    }
 
     private WebElement waitForElementPresent(By by, String error_message, long timeoutInSeconds) {
         WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
