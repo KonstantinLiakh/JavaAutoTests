@@ -73,4 +73,17 @@ public class SearchTests extends CoreTestCase {
         SearchPageObject.typeSearchLine("Java");
         SearchPageObject.assertEachArticleTitleOnPageHasText();
     }*/
+
+    // ТЕСТ ДЛЯ ПРОВЕРКИ ПОИСКА СТАТЬИ ПО НАЗВАНИЮ И ОПИСАНИЮ
+    @Test
+    public void testSearchObjectWithDescription() {
+
+        SearchPageObject SearchPageObject = new SearchPageObject(driver);
+
+        SearchPageObject.initSearchInput();
+        SearchPageObject.typeSearchLine("Java");
+        SearchPageObject.waitForSearchResultWithDescription("Java", "Indonesian island");
+        SearchPageObject.waitForSearchResultWithDescription("JavaScript", "High-level programming language");
+        SearchPageObject.waitForSearchResultWithDescription("Java (programming language)", "Object-oriented programming language");
+    }
 }

@@ -12,6 +12,7 @@ public class SearchPageObject extends MainPageObject {
         SEARCH_INPUT = "//*[contains(@text, 'Search Wikipedia')]",
         SEARCH_CANCEL_BUTTON = "//android.widget.ImageButton",
         SEARCH_RESULT_SUBSTRING_TPL = "//android.widget.TextView[contains(@text, '{SUBSTRING}')]",
+        SEARCH_RESULT_TITLE_AND_DESCRIPTION_TPL = "//android.widget.TextView[@index='0' and @text='{SUBSTRING1}']/../android.widget.TextView[@index='1' and @text='{SUBSTRING2}']",
         SEARCH_RESULT_ELEMENT = "//android.view.ViewGroup[@index='0']/android.widget.TextView[@text='Linkin Park discography' and @index='0']",
         SEARCH_EMPTY_RESULT_ELEMENT = "//*[contains(@text, 'No results')]",
         TITLE_OF_ARTICLE0 = "//android.view.ViewGroup[@index='0']/android.widget.TextView[@index='0']",
@@ -31,6 +32,13 @@ public class SearchPageObject extends MainPageObject {
     private static String getResultSearchElement(String substring){
         return SEARCH_RESULT_SUBSTRING_TPL.replace("{SUBSTRING}", substring);
     }
+
+    private static String getResultSearchElementWithDescription(String substring1, String substring2){
+        return SEARCH_RESULT_TITLE_AND_DESCRIPTION_TPL
+                .replace("{SUBSTRING1}", substring1)
+                .replace("{SUBSTRING2}", substring2);
+    }
+
     /* TEMPLATES METHODS*/
 
     public void initSearchInput() {
@@ -59,6 +67,11 @@ public class SearchPageObject extends MainPageObject {
     public void waitForSearchResult(String substring) {
         String search_result_xpath = getResultSearchElement(substring);
         this.waitForElementPresent(By.xpath(search_result_xpath), "Cannot find SEARCH_RESULT with substring" + substring, 15);
+    }
+
+    public void waitForSearchResultWithDescription(String substring1, String substring2) {
+        String search_result_xpath = getResultSearchElementWithDescription(substring1, substring2);
+        this.waitForElementPresent(By.xpath(search_result_xpath), "Cannot find SEARCH_RESULT with substrings", 15);
     }
 
     public void clickByArticleSubstring(String substring) {
