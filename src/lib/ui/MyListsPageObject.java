@@ -1,12 +1,14 @@
 package lib.ui;
 
 import io.appium.java_client.AppiumDriver;
+import lib.Platform;
 
-public class MyListsPageObject extends MainPageObject{
+ abstract public class MyListsPageObject extends MainPageObject{
 
-    public static final String
-        FOLDER_BY_NAME_TPL = "xpath://android.widget.TextView[contains(@text, '{FOLDER_NAME}')]",
-        ARTICLE_BY_TITLE_TPL = "xpath://android.widget.TextView[contains(@text, '{TITLE}')]";
+    protected static String
+        FOLDER_BY_NAME_TPL,
+        ARTICLE_BY_TITLE_TPL,
+        ARTICLE_DELETE_BUTTON_FOR_IOS;
 
     private static String getFolderXpathByName(String name_of_my_folder) {
         return FOLDER_BY_NAME_TPL.replace("{FOLDER_NAME}", name_of_my_folder);
@@ -45,6 +47,13 @@ public class MyListsPageObject extends MainPageObject{
                 article_xpath,
                 "Cannot find saved article"
         );
+        if (Platform.getInstance().isIOS()) {
+            this.waitForElementAndClick(ARTICLE_DELETE_BUTTON_FOR_IOS,
+                    "Cannot find delete article button for iOS",
+                    5
+            );
+        }
+
         this.waitForArticleToDisappear_ByTitle(article_title);
     }
 
