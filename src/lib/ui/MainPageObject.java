@@ -14,6 +14,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 import java.util.List;
 import java.util.regex.Pattern;
+import lib.Platform;
 
 public class MainPageObject {
 
@@ -126,21 +127,26 @@ public class MainPageObject {
 
     public void swipeElementToLeft(String locator, String error_message){
         WebElement element = waitForElementPresent(locator, error_message, 10);
-        int left_x = (int) ((element.getLocation().getX()) * 0.1);
-        int right_x = (int) ((left_x + element.getSize().getWidth()) * 0.8);
+        int left_x = element.getLocation().getX();
+        int right_x = left_x + element.getSize().getWidth();
         int upper_y = element.getLocation().getY();
         int lower_y = upper_y + element.getSize().getHeight();
         int middle_y = (upper_y + lower_y) / 2;
 
         TouchAction action = new TouchAction(driver);
-        Dimension size = driver.manage().window().getSize();
 
-        action
-                .press(PointOption.point(right_x, middle_y))
-                .waitAction(WaitOptions.waitOptions(Duration.ofMillis(300)))
-                .moveTo(PointOption.point(left_x, middle_y))
-                .release()
-                .perform();
+        action.press(PointOption.point(right_x, middle_y));
+        action.waitAction(WaitOptions.waitOptions(Duration.ofMillis(300)));
+
+        if (Platform.getInstance().isAndroid()) {
+            action.moveTo(PointOption.point(left_x, middle_y));
+        }
+        else {
+            int offset_x = (-1 * (right_x / 2));
+            action.moveTo(PointOption.point(offset_x, middle_y));
+        }
+        action.release();
+        action.perform();
     }
 
     public int getAmountOfElements(String locator) {

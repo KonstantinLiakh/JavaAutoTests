@@ -7,6 +7,7 @@ import lib.ui.MyListsPageObject;
 import lib.ui.NavigationUI;
 import lib.ui.SearchPageObject;
 import lib.ui.factories.ArticlePageObjectFactory;
+import lib.ui.factories.MyListsPageObjectFactory;
 import lib.ui.factories.NavigationUIFactory;
 import lib.ui.factories.SearchPageObjectFactory;
 import org.junit.Test;
@@ -43,8 +44,12 @@ public class MyListTests extends CoreTestCase {
         NavigationUI NavigationUI = NavigationUIFactory.get(driver);
         NavigationUI.clickMyLists();
 
-        MyListsPageObject MyListsPageObject = new MyListsPageObject(driver);
-        MyListsPageObject.openFolderByName(name_of_my_folder);
+        MyListsPageObject MyListsPageObject = MyListsPageObjectFactory.get(driver);
+
+        if (Platform.getInstance().isAndroid()) {
+            MyListsPageObject.openFolderByName(name_of_my_folder);
+        }
+
         MyListsPageObject.swipeByArticleToDelete(article_title);
     }
     //ТЕСТ ДЛЯ СОХРАНЕНИЯ ДВУХ СТАТЕЙ В НОВЫЙ СПИСОК И ПОТОМ УДАЛЯЕТ ОДНУ СТАТЬЮ ИЗ СПИСКА
@@ -78,7 +83,7 @@ public class MyListTests extends CoreTestCase {
         NavigationUI NavigationUI = NavigationUIFactory.get(driver);
         NavigationUI.clickMyLists();
 
-        MyListsPageObject MyListsPageObject = new MyListsPageObject(driver);
+        MyListsPageObject MyListsPageObject = MyListsPageObjectFactory.get(driver);
         MyListsPageObject.openFolderByName(name_of_my_folder);
         MyListsPageObject.swipeByArticleToDelete(article_to_be_deleted);
 
