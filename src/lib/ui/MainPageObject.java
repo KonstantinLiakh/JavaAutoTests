@@ -135,15 +135,15 @@ public class MainPageObject {
 
         TouchAction action = new TouchAction(driver);
 
-        action.press(PointOption.point(right_x, middle_y));
+        action.press(PointOption.point(right_x, lower_y));
         action.waitAction(WaitOptions.waitOptions(Duration.ofMillis(300)));
 
         if (Platform.getInstance().isAndroid()) {
-            action.moveTo(PointOption.point(left_x, middle_y));
+            action.moveTo(PointOption.point(left_x, lower_y));
         }
         else {
-            int offset_x = (-1 * (right_x / 2));
-            action.moveTo(PointOption.point(offset_x, middle_y));
+            int offset_x = (-1 * element.getSize().getWidth());
+            action.moveTo(PointOption.point(offset_x,0));
         }
         action.release();
         action.perform();
