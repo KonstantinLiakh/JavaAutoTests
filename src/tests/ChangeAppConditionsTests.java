@@ -3,6 +3,8 @@ package tests;
 import lib.CoreTestCase;
 import lib.ui.ArticlePageObject;
 import lib.ui.SearchPageObject;
+import lib.ui.factories.ArticlePageObjectFactory;
+import lib.ui.factories.SearchPageObjectFactory;
 import org.junit.Test;
 
 public class ChangeAppConditionsTests extends CoreTestCase {
@@ -11,16 +13,16 @@ public class ChangeAppConditionsTests extends CoreTestCase {
     @Test
     public void testChangeOrientationScreenInSearchResults(){
 
-        SearchPageObject SearchPageObject = new SearchPageObject(driver);
+        SearchPageObject SearchPageObject = SearchPageObjectFactory.get(driver);
 
         SearchPageObject.initSearchInput();
         SearchPageObject.typeSearchLine("Java");
         SearchPageObject.clickByArticleSubstring("Java (programming language)");
 
-        ArticlePageObject ArticlePageObject = new ArticlePageObject(driver);
-        String title_before_rotation = ArticlePageObject.waitForTitleElement("Java (programming language)").getAttribute("text");
+        ArticlePageObject ArticlePageObject = ArticlePageObjectFactory.get(driver);
+        String title_before_rotation = ArticlePageObject.waitForTitleElement("Java (programming language)");
         this.rotateScreenLandscape();
-        String title_after_rotation = ArticlePageObject.waitForTitleElement("Java (programming language)").getAttribute("text");
+        String title_after_rotation = ArticlePageObject.waitForTitleElement("Java (programming language)");
 
         assertEquals(
                 "Article title has been changed after rotation",
@@ -29,7 +31,7 @@ public class ChangeAppConditionsTests extends CoreTestCase {
         );
 
         this.rotateScreenPortrait();
-        String title_after_second_rotation = ArticlePageObject.waitForTitleElement("Java (programming language)").getAttribute("text");
+        String title_after_second_rotation = ArticlePageObject.waitForTitleElement("Java (programming language)");
 
         assertEquals(
                 "Article title has been changed after rotation",
@@ -42,7 +44,7 @@ public class ChangeAppConditionsTests extends CoreTestCase {
     @Test
     public void testArticleTextAfterBackground(){
 
-        SearchPageObject SearchPageObject = new SearchPageObject(driver);
+        SearchPageObject SearchPageObject = SearchPageObjectFactory.get(driver);
 
         SearchPageObject.initSearchInput();
         SearchPageObject.typeSearchLine("Java");

@@ -2,18 +2,20 @@ package lib.ui;
 
 import io.appium.java_client.AppiumDriver;
 import org.openqa.selenium.WebElement;
+import lib.Platform;
 
-public class ArticlePageObject extends MainPageObject{
+abstract public class ArticlePageObject extends MainPageObject{
 
-    private static final String
-        TITLE_TPL = "xpath://android.view.View[contains(@text, '{ARTICLE_NAME}')]",
-        FOOTER_ELEMENT = "xpath://*[contains(@text, 'View article in browser')]",
-        SAVE_BUTTON = "xpath://android.widget.TextView[contains(@text, 'Save')]",
-        ADD_TO_MY_LIST_BUTTON = "xpath://android.widget.Button[contains(@text, 'ADD TO LIST')]",
-        MY_LIST_INPUT = "id:org.wikipedia:id/text_input",
-        MY_LIST_OK_BUTTON = "xpath://android.widget.Button[contains(@text, 'OK')]",
-        CLOSE_ARTICLE_BUTTON = "xpath://android.widget.ImageButton[contains(@content-desc, 'Navigate up')]",
-        LIST_CREATED_BY_ME = "xpath://android.widget.TextView[contains(@text, 'List')]";
+    protected static String
+        TITLE_TPL,
+        FOOTER_ELEMENT,
+        SAVE_BUTTON,
+        CLOSE_DIALOG,
+        ADD_TO_MY_LIST_BUTTON,
+        MY_LIST_INPUT,
+        MY_LIST_OK_BUTTON,
+        CLOSE_ARTICLE_BUTTON,
+        LIST_CREATED_BY_ME;
 
     public ArticlePageObject(AppiumDriver driver) {
         super(driver);
@@ -23,10 +25,16 @@ public class ArticlePageObject extends MainPageObject{
         return TITLE_TPL.replace("{ARTICLE_NAME}", article_name);
     }
 
-    public WebElement waitForTitleElement(String article_name) {
+    public String waitForTitleElement(String article_name) {
 
-        String title_xpath = getTitleXpath(article_name);
-        return this.waitForElementPresent(title_xpath, "Cannot find article title on a page", 15);
+        if (Platform.getInstance().isAndroid()) {
+            String title_xpath = getTitleXpath(article_name);
+            return this.waitForElementPresent(title_xpath, "Cannot find article title on a page", 15).getAttribute("text");
+        }
+        else {
+            String title_xpath = getTitleXpath(article_name);
+            return this.waitForElementPresent(title_xpath, "Cannot find article title on a page", 15).getAttribute("name");
+        }
     }
 
     public void checkTitleElementWithoutWaitingTime(String article_name) {
@@ -39,11 +47,18 @@ public class ArticlePageObject extends MainPageObject{
     }
     public void swipeToFooter() {
 
-        this.swipeUpToFindElement(
-                FOOTER_ELEMENT,
-                "Cannot find the end of article",
-                20
-        );
+        if (Platform.getInstance().isAndroid()) {
+            this.swipeUpToFindElement(
+                    FOOTER_ELEMENT,
+                    "Cannot find the end of article",
+                    20
+            );
+        }
+        else {
+            this.swipeUpTillElementAppeared(FOOTER_ELEMENT,
+                    "Cannot find the end of article",
+                    40);
+        }
     }
 
     public void addArticleToMyList(String name_of_my_folder){
@@ -87,6 +102,11 @@ public class ArticlePageObject extends MainPageObject{
                 "Cannot press 'OK' button to save 2nd article to my list",
                 5
         );
+    }
+
+    public void addArticlesToMySavedIOS() {
+        this.waitForElementAndClick(SAVE_BUTTON, "Cannot find option button to add article to reading list", 5);
+        this.waitForElementAndClick(CLOSE_DIALOG, "Cannot find close dialog button for iOS",5);
     }
 
     public void closeArticle() {
