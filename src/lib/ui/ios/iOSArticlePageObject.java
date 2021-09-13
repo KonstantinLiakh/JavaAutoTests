@@ -7,6 +7,7 @@ public class iOSArticlePageObject extends ArticlePageObject {
 
     static {
         TITLE_TPL = "id:Java (programming language)";
+        TITLE_TPL2 = "id:JavaScript";
         FOOTER_ELEMENT = "id:View article in browser";
         SAVE_BUTTON = "id:Save for later";
         CLOSE_DIALOG = "id:places auth close";

@@ -2,14 +2,8 @@ package tests;
 
 import lib.CoreTestCase;
 import lib.Platform;
-import lib.ui.ArticlePageObject;
-import lib.ui.MyListsPageObject;
-import lib.ui.NavigationUI;
-import lib.ui.SearchPageObject;
-import lib.ui.factories.ArticlePageObjectFactory;
-import lib.ui.factories.MyListsPageObjectFactory;
-import lib.ui.factories.NavigationUIFactory;
-import lib.ui.factories.SearchPageObjectFactory;
+import lib.ui.*;
+import lib.ui.factories.*;
 import org.junit.Test;
 
 public class MyListTests extends CoreTestCase {
@@ -20,6 +14,9 @@ public class MyListTests extends CoreTestCase {
     @Test
     public void testSaveFirstArticleToMyList(){
 
+        WelcomePageObject WelcomePageObject = WelcomePageObjectFactory.get(driver);
+        WelcomePageObject.clickOnSkipButton();
+
         SearchPageObject SearchPageObject = SearchPageObjectFactory.get(driver);
 
         SearchPageObject.initSearchInput();
@@ -27,9 +24,9 @@ public class MyListTests extends CoreTestCase {
         SearchPageObject.clickByArticleSubstring("Java (programming language)");
 
         ArticlePageObject ArticlePageObject = ArticlePageObjectFactory.get(driver);
-        ArticlePageObject.waitForTitleElement("Java (programming language)");
+        ArticlePageObject.waitForTitleElement1("Java (programming language)");
 
-        String article_title = ArticlePageObject.waitForTitleElement("Java (programming language)");
+        String article_title = ArticlePageObject.waitForTitleElement1("Java (programming language)");
 
         if (Platform.getInstance().isAndroid()) {
             ArticlePageObject.addArticleToMyList(name_of_my_folder);
@@ -56,6 +53,9 @@ public class MyListTests extends CoreTestCase {
     @Test
     public void testSaveTwoArticlesAndDeleteOneOfIt(){
 
+        WelcomePageObject WelcomePageObject = WelcomePageObjectFactory.get(driver);
+        WelcomePageObject.clickOnSkipButton();
+
         //Save 1st article
         SearchPageObject SearchPageObject = SearchPageObjectFactory.get(driver);
 
@@ -64,32 +64,50 @@ public class MyListTests extends CoreTestCase {
         SearchPageObject.clickByArticleSubstring("JavaScript");
 
         ArticlePageObject ArticlePageObject = ArticlePageObjectFactory.get(driver);
-        ArticlePageObject.waitForTitleElement("JavaScript");
+        ArticlePageObject.waitForTitleElement2("JavaScript");
 
-        String title_before_saving = ArticlePageObject.waitForTitleElement("JavaScript");
+        String title_before_saving = ArticlePageObject.waitForTitleElement2("JavaScript");
 
-        ArticlePageObject.addArticleToMyList(name_of_my_folder);
-        ArticlePageObject.closeArticle();
+        if (Platform.getInstance().isAndroid()) {
+            ArticlePageObject.addArticleToMyList(name_of_my_folder);
+            ArticlePageObject.closeArticle();
+        }
+        else {
+            ArticlePageObject.addArticlesToMySavedIOS();
+            ArticlePageObject.closeArticle();
+            SearchPageObject.initSearchInput();
+        }
 
         //Save 2nd article
         SearchPageObject.clickByArticleSubstring("Java (programming language)");
-        ArticlePageObject.waitForTitleElement("Java (programming language)");
-        String article_to_be_deleted = ArticlePageObject.waitForTitleElement("Java (programming language)");
-        ArticlePageObject.addArticleToAlreadyExistingList();
-        ArticlePageObject.closeArticle();
+        ArticlePageObject.waitForTitleElement1("Java (programming language)");
+        String article_to_be_deleted = ArticlePageObject.waitForTitleElement1("Java (programming language)");
+
+        if (Platform.getInstance().isAndroid()) {
+            ArticlePageObject.addArticleToAlreadyExistingList();
+            ArticlePageObject.closeArticle();
+            SearchPageObject.clickCancelSearch();
+        }
+        else {
+            ArticlePageObject.addArticlesToMySavedIOSWithAlreadySaved();
+            ArticlePageObject.closeArticle();
+        }
 
         //Navigation to my lists
-        SearchPageObject.clickCancelSearch();
         NavigationUI NavigationUI = NavigationUIFactory.get(driver);
         NavigationUI.clickMyLists();
 
         MyListsPageObject MyListsPageObject = MyListsPageObjectFactory.get(driver);
-        MyListsPageObject.openFolderByName(name_of_my_folder);
+
+        if (Platform.getInstance().isAndroid()) {
+            MyListsPageObject.openFolderByName(name_of_my_folder);
+        }
+
         MyListsPageObject.swipeByArticleToDelete(article_to_be_deleted);
 
         SearchPageObject.clickByArticleSubstring("JavaScript");
 
-        String title_after_saving = ArticlePageObject.waitForTitleElement("JavaScript");
+        String title_after_saving = ArticlePageObject.waitForTitleElement2("JavaScript");
 
         assertEquals(
                 "Title of the 1st article before saving is not equal to title in saved list folder",

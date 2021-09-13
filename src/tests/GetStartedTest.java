@@ -3,6 +3,7 @@ package tests;
 import lib.CoreTestCase;
 import lib.Platform;
 import lib.ui.WelcomePageObject;
+import lib.ui.factories.WelcomePageObjectFactory;
 import org.junit.Test;
 
 public class GetStartedTest extends CoreTestCase {
@@ -15,7 +16,7 @@ public class GetStartedTest extends CoreTestCase {
             return;
         }
 
-        WelcomePageObject WelcomePage = new WelcomePageObject(driver);
+        WelcomePageObject WelcomePage = WelcomePageObjectFactory.get(driver);
 
         WelcomePage.waitForMoreLink();
         WelcomePage.clickNextButton();

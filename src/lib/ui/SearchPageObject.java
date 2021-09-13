@@ -6,7 +6,6 @@ import org.openqa.selenium.WebElement;
 abstract public class SearchPageObject extends MainPageObject {
 
     protected static String
-        SKIP_BUTTON_ON_MAIN_PAGE,
         SEARCH_INIT_ELEMENT,
         SEARCH_INPUT,
         SEARCH_CANCEL_BUTTON,
@@ -33,8 +32,6 @@ abstract public class SearchPageObject extends MainPageObject {
     /* TEMPLATES METHODS*/
 
     public void initSearchInput() {
-        this.waitForElementPresent(SKIP_BUTTON_ON_MAIN_PAGE, "Cannot find 'SKIP_BUTTON' on main page", 5 );
-        this.waitForElementAndClick(SKIP_BUTTON_ON_MAIN_PAGE, "Cannot click on 'SKIP_BUTTON' on main page", 5);
         this.waitForElementPresent(SEARCH_INIT_ELEMENT, "Cannot find 'Search Wikipedia' input after clicking by SEARCH_INIT_ELEMENT", 5 );
         this.waitForElementAndClick(SEARCH_INIT_ELEMENT, "Cannot click on 'Search Wikipedia' input", 5);
     }

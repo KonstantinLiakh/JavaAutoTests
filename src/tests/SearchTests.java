@@ -2,7 +2,9 @@ package tests;
 
 import lib.CoreTestCase;
 import lib.ui.SearchPageObject;
+import lib.ui.WelcomePageObject;
 import lib.ui.factories.SearchPageObjectFactory;
+import lib.ui.factories.WelcomePageObjectFactory;
 import org.junit.Test;
 
 public class SearchTests extends CoreTestCase {
@@ -10,6 +12,9 @@ public class SearchTests extends CoreTestCase {
     // ТЕСТ ДЛЯ ПРОВЕРКИ ПОИСКА СТАТЬИ - done
     @Test
     public void testSearchObject() {
+
+        WelcomePageObject WelcomePageObject = WelcomePageObjectFactory.get(driver);
+        WelcomePageObject.clickOnSkipButton();
 
         SearchPageObject SearchPageObject = SearchPageObjectFactory.get(driver);
 
@@ -21,6 +26,9 @@ public class SearchTests extends CoreTestCase {
     // ТЕСТ ДЛЯ ОТМЕНЫ ПОИСКА - done
     @Test
     public void testSearchCancel() {
+
+        WelcomePageObject WelcomePageObject = WelcomePageObjectFactory.get(driver);
+        WelcomePageObject.clickOnSkipButton();
 
         SearchPageObject SearchPageObject = SearchPageObjectFactory.get(driver);
 
@@ -34,6 +42,9 @@ public class SearchTests extends CoreTestCase {
     //ТЕСТ ДЛЯ ПРОВЕРКИ ПОИСКА ПРИ НАЛИЧИИ РЕЗУЛЬТАТОВ В ПОИСКЕ
     @Test
     public void testAmountOfNotEmptySearch(){
+
+        WelcomePageObject WelcomePageObject = WelcomePageObjectFactory.get(driver);
+        WelcomePageObject.clickOnSkipButton();
 
         SearchPageObject SearchPageObject = SearchPageObjectFactory.get(driver);
         SearchPageObject.initSearchInput();
@@ -53,6 +64,9 @@ public class SearchTests extends CoreTestCase {
     @Test
     public void testAmountOfEmptySearch() {
 
+        WelcomePageObject WelcomePageObject = WelcomePageObjectFactory.get(driver);
+        WelcomePageObject.clickOnSkipButton();
+
         SearchPageObject SearchPageObject = SearchPageObjectFactory.get(driver);
         SearchPageObject.initSearchInput();
 
@@ -66,6 +80,9 @@ public class SearchTests extends CoreTestCase {
     // ТЕСТ ДЛЯ ПРОВЕРКИ ПОИСКА СТАТЬИ ПО НАЗВАНИЮ И ОПИСАНИЮ
     @Test
     public void testSearchObjectWithDescription() {
+
+        WelcomePageObject WelcomePageObject = WelcomePageObjectFactory.get(driver);
+        WelcomePageObject.clickOnSkipButton();
 
         SearchPageObject SearchPageObject = SearchPageObjectFactory.get(driver);
 
