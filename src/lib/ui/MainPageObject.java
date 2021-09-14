@@ -138,13 +138,7 @@ public class MainPageObject {
         action.press(PointOption.point(right_x, lower_y));
         action.waitAction(WaitOptions.waitOptions(Duration.ofMillis(300)));
 
-        if (Platform.getInstance().isAndroid()) {
-            action.moveTo(PointOption.point(left_x, lower_y));
-        }
-        else {
-            int offset_x = (-1 * element.getSize().getWidth());
-            action.moveTo(PointOption.point(offset_x,0));
-        }
+        action.moveTo(PointOption.point(left_x, lower_y));
         action.release();
         action.perform();
     }

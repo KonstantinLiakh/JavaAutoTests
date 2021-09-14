@@ -12,7 +12,7 @@ import org.junit.Test;
 
 public class ArticleTests extends CoreTestCase {
 
-    // ТЕСТ, КОТОРЫЙ ПРОВЕРЯЕТ НАЗВАНИЕ СТАТЬИ - done
+    // ТЕСТ, КОТОРЫЙ ПРОВЕРЯЕТ НАЗВАНИЕ СТАТЬИ
     @Test
     public void testCompareArticleTitle() {
 
@@ -36,7 +36,7 @@ public class ArticleTests extends CoreTestCase {
         );
     }
 
-    // ТЕСТ ДЛЯ ПРОВЕРКИ СКРОЛЛИНГА СТРАНИЦЫ ВНИЗ - done
+    // ТЕСТ ДЛЯ ПРОВЕРКИ СКРОЛЛИНГА СТРАНИЦЫ ВНИЗ
     @Test
     public void testSwipeArticle() {
 
@@ -64,10 +64,10 @@ public class ArticleTests extends CoreTestCase {
         SearchPageObject SearchPageObject = SearchPageObjectFactory.get(driver);
 
         SearchPageObject.initSearchInput();
-        SearchPageObject.typeSearchLine("JavaScript");
-        SearchPageObject.clickByArticleSubstring("JavaScript");
+        SearchPageObject.typeSearchLine("Java (programming language)");
+        SearchPageObject.clickByArticleSubstring("Java (programming language)");
 
         ArticlePageObject ArticlePageObject = ArticlePageObjectFactory.get(driver);
-        ArticlePageObject.checkTitleElementWithoutWaitingTime("Javascript");
+        ArticlePageObject.checkTitleElementWithoutWaitingTime("Java (programming language)");
     }
 }
